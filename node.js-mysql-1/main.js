@@ -6,6 +6,7 @@ var template = require('./lib/template.js');
 var qs = require('querystring');
 
 var topic = require('./lib/topic');
+var author = require('./lib/author');
 
 var app = http.createServer(function(request,response){
     var _url = request.url;
@@ -27,46 +28,17 @@ var app = http.createServer(function(request,response){
       topic.update_pocess(request, response);
     } else if(pathname === '/delete_process'){
       topic.delete_process(request, response);
-    } else if(pathname === '/authors'){
-      db.query(`SELECT * FROM topic`, function(error,topics){
-        if(error){
-          throw error;
-        }
-        db.query(`SELECT * FROM author`, function(error2,authors){
-          var title = 'Authors';
-          var list = template.list(topics);
-          var html = template.HTML(title, list,
-          template.table(authors),
-          `<a href="/author_create">create</a>`
-          );
-          response.writeHead(200);
-          response.end(html);
-        });
-      });
-    } else if(pathname === "/author_create"){
-      db.query(`SELECT * FROM topic`, function(error,topics){
-        if(error){
-          throw error;
-        }
-        db.query(`SELECT * FROM author`, function(error2,authors){
-          var title = 'Authors';
-          var list = template.list(topics);
-          var html = template.HTML(title, list,
-            `<form action="/author_create_process" method="post>
-              <p>
-                name: <input type="text">
-              </p>
-              <p>
-                profile: <input type="textarea">
-              </p>
-            </form>`,
-            template.table(authors),
-          );
-          response.writeHead(200);
-          response.end(html);
-        });
-      });
-    }else {
+    } else if(pathname === '/author'){
+      author.home(request,response);
+    } else if(pathname === "/author/create_process"){
+      author.create_process(request,response);
+    } else if(pathname === "/author/update"){
+      author.update(request,response,queryData);
+    } else if(pathname === "/author/update_process"){
+      author.update_pocess(request,response);
+    } else if(pathname === "/author/delete_process"){
+      author.delete_process(request,response);
+    } else {
       response.writeHead(404);
       response.end('Not found');
     }

@@ -9,7 +9,7 @@ module.exports = {
     </head>
     <body>
       <h1><a href="/">WEB</a></h1>
-      <h3><a href="/authors">authors</a></h3>
+      <h3><a href="/author">authors</a></h3>
       ${list}
       ${control}
       ${body}
@@ -40,7 +40,7 @@ module.exports = {
       <select name="author">
         ${tag}
       </select>`;
-  }, table:function(authors){
+  }, authorTable:function(authors){
     var tag = '<table border="1">';
     var i = 0;
     while(i < authors.length){
@@ -53,10 +53,13 @@ module.exports = {
             ${authors[i].profile}
           </td>
           <td>
-            <button>update</button>
+            <a href="/author/update?id=${authors[i].id}">update</a>
           </td>
           <td>
-            <button>delete</button>
+            <form method="post" action="author/delete_process">
+              <input name="id" type="hidden" value="${authors[i].id}">
+              <input type="submit" value="delete">
+            </form>
           </td>
         </tr>`;
       i++;
